@@ -1,0 +1,1 @@
+//metodos de user que utiliza el login (ej:verificar credenciales)
