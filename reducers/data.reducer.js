@@ -8,7 +8,7 @@ const initialState =  {
 }
 
 
-let dataReducer = (state = initialState, action) => {
+let dataReducer = ( state = initialState, action) => {
     switch(action.type) {
         case FETCHING_DATA:
             return {
