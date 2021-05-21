@@ -1,8 +1,26 @@
 import {combineReducers} from 'redux';
-import tabBarReducer from './tabBar.reducer'
-import dataReducer from './data.reducer'
+import { LOGIN, SIGNUP, LOGIN_FACEBOOK, UPDATE_EMAIL, UPDATE_PASSWORD } from '../actions/user'
 
-export default combineReducers({
-    tabId: tabBarReducer,
-    data: dataReducer
+const user = (state = {}, action) => {
+	switch (action.type) {
+		case LOGIN:
+			return action.payload
+		case SIGNUP:
+			return action.payload
+		case LOGIN_FACEBOOK:
+			return action.payload
+		case UPDATE_EMAIL:
+			return { ...state, email: action.payload }
+		case UPDATE_PASSWORD:
+			return { ...state, password: action.payload }
+		default:
+			return state
+	}
+}
+
+const rootReducer = combineReducers({
+	user
 })
+
+export default rootReducer
+
