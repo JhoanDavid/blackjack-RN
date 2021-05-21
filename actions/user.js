@@ -1,4 +1,5 @@
-import Firebase, { db } from '../Firebase'
+import Firebase, { db } from '../Firebase';
+const firebase = require('firebase'); 
 import { FacebookAuthProvider } from "firebase/firebase-auth";
 import {FACEBOOK_APP_ID, FACEBOOK_APP_NAME} from 'react-native-dotenv'
 import * as Facebook from 'expo-facebook'
@@ -82,25 +83,18 @@ export const signup = () => {
 export const loginFacebook = () => {
 		return async (dispatch) => {
 			try {
-				console.log("login con faceobook")
-				console.log(FACEBOOK_APP_ID);
 				await Facebook.initializeAsync({appId: FACEBOOK_APP_ID});
-				console.log(Facebook);
-				console.log("pasó por el await")
-				const { type, token } = await Facebook.logInWithReadPermissionsAsync({permissions: ['public_profile'],})
-				console.log("token "+ token)
-				
+				//const { type, token } = await Facebook.logInWithReadPermissionsAsync({permissions: ['public_profile'],})
+				const response = await Facebook.logInWithReadPermissionsAsync({permissions: ['public_profile', 'email']})
+				const token=response.token;
+				const type=response.type;
 				if (type == 'success') {
 				console.log("entro al succes");
-				var provider = new  FacebookAuthProvider()
-				
-				provider.addScope('public_profile');
-				console.log(provider);
-				//console.log(Firebase);
+
 					//await Firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
 						
-		  			const credential = new Firebase.auth.FacebookAuthProvider.credential(token)
-					console.log(credential)
+					const credential = firebase.auth.FacebookAuthProvider.credential(token);
+					console.log(credential);
 					Firebase.auth().signInWithCredential(credential)
 					const facebookProfileData = await firebase.auth().signInAndRetrieveDataWithCredential(credential);
 					dispatch({ type: LOGIN_FACEBOOK, payload: facebookProfileData })
