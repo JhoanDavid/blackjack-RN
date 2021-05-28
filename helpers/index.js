@@ -6,6 +6,16 @@ export function shuffle(cardsDeck){
     return cardsDeck;
 }
 
+
+
+
+
+
+
+
+
+
+/*
 export function calculatePoints(playerHand){
     let aceAdjuts = false,
     points = 0;
@@ -22,4 +32,4 @@ export function calculatePoints(playerHand){
       points = points - 10;
     }
     return points;
-}
+}*/

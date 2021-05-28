@@ -1,20 +1,13 @@
 import React from 'react'
-import { View, TextInput, StyleSheet, TouchableOpacity, Text, Button } from 'react-native'
+import { View, TextInput, StyleSheet, TouchableOpacity, Text } from 'react-native'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { updateEmail, updatePassword, login, getUser, loginFacebook } from '../actions/user'
-import Firebase from '../Firebase'
+import { updateEmail, updatePassword, signup } from '../../actions/user'
 
-class Login extends React.Component {
-	componentDidMount = () => {
-		Firebase.auth().onAuthStateChanged(user => {
-			if (user) {
-				this.props.getUser(user.uid)
-				if (this.props.user != null) {
-					this.props.navigation.navigate('Profile')
-				}
-			}
-		})
+class Signup extends React.Component {
+	handleSignUp = () => {
+		this.props.signup()
+		this.props.navigation.navigate('Profile')
 	}
 
 	render() {
@@ -34,17 +27,9 @@ class Login extends React.Component {
 					placeholder='Contraseña'
 					secureTextEntry={true}
 				/>
-				<TouchableOpacity style={styles.button} onPress={() => this.props.login()}>
-					<Text style={styles.buttonText}>Iniciar sesión</Text>
+				<TouchableOpacity style={styles.button} onPress={this.handleSignUp}>
+					<Text style={styles.buttonText}>Registrarse</Text>
 				</TouchableOpacity>
-				<Button
-					title="Registrarse"
-					onPress={() => this.props.navigation.navigate('Signup')}
-				/>
-				<Button
-					title="Iniciar sesión con Facebook"
-					onPress={() => this.props.loginFacebook()}
-				/>
 			</View>
 		)
 	}
@@ -71,8 +56,8 @@ const styles = StyleSheet.create({
 		marginBottom: 20,
 		paddingVertical: 5,
 		alignItems: 'center',
-		backgroundColor: '#F6820D',
-		borderColor: '#F6820D',
+		backgroundColor: '#FFA611',
+		borderColor: '#FFA611',
 		borderWidth: 1,
 		borderRadius: 5,
 		width: 200
@@ -88,7 +73,7 @@ const styles = StyleSheet.create({
 })
 
 const mapDispatchToProps = dispatch => {
-	return bindActionCreators({ updateEmail, updatePassword, login, loginFacebook ,getUser }, dispatch)
+	return bindActionCreators({ updateEmail, updatePassword, signup }, dispatch)
 }
 
 const mapStateToProps = state => {
@@ -100,4 +85,4 @@ const mapStateToProps = state => {
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(Login)
+)(Signup)

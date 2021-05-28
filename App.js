@@ -4,9 +4,9 @@ import { Provider } from 'react-redux';
 import configureStore from './configureStore'
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import Login from './screens/Login'
-import Signup from './screens/Signup'
-import Profile from './screens/Profile'
+import Login from './components/login/login.view'
+import Signup from './components/register/Signup.view'
+import Profile from './components/Profile/Profile.view'
 
 let store=configureStore();
 const Stack = createStackNavigator();
@@ -19,6 +19,7 @@ export default function App() {
             <Stack.Screen name="Login" component={Login} />
             <Stack.Screen name="Signup" component={Signup} />
             <Stack.Screen name="Profile" component={Profile} />
+            
           </Stack.Navigator>
       </NavigationContainer>
   </Provider>
@@ -33,3 +34,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
+/*<Stack.Screen name="Game" component={Game} />
+            <Stack.Screen name="Instructions" component={Instructions} /> */

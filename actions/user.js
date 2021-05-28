@@ -1,8 +1,7 @@
-import Firebase, { db } from '../Firebase';
-const firebase = require('firebase'); 
+import Firebase, { db } from '../Firebase'
 import {FACEBOOK_APP_ID} from 'react-native-dotenv'
 import * as Facebook from 'expo-facebook'
-
+const firebase = require('firebase')
 
 // define types
 
@@ -11,6 +10,8 @@ export const UPDATE_PASSWORD = 'UPDATE_PASSWORD'
 export const LOGIN = 'LOGIN'
 export const SIGNUP = 'SIGNUP'
 export const LOGIN_FACEBOOK = 'LOGIN_FACEBOOK'
+export const LOADING = 'LOADING'
+export const LOGIN_FAILED = 'LOGIN_FAILED'
 
 // actions
 
@@ -31,6 +32,7 @@ export const updatePassword = password => {
 export const login = () => {
 	return async (dispatch, getState) => {
 		try {
+			dispatch({type: LOADING})
 			const { email, password } = getState().user
 			const response = await Firebase.auth().signInWithEmailAndPassword(email, password)
 
@@ -49,8 +51,11 @@ export const getUser = uid => {
 				.doc(uid)
 				.get()
 
+			
 			dispatch({ type: LOGIN, payload: user.data() })
+
 		} catch (e) {
+			dispatch({type: LOGIN_FAILED})
 			alert(e)
 		}
 	}
@@ -80,31 +85,32 @@ export const signup = () => {
 }
 
 export const loginFacebook = () => {
-	return async (dispatch) => {
-		try {
-			dispatch({type: LOADING})
-			await Facebook.initializeAsync({appId: FACEBOOK_APP_ID});
-			const { type, token } = await Facebook.logInWithReadPermissionsAsync({permissions: ['public_profile', 'email'],})
-			
-			if (type == 'success') {			
+		return async (dispatch) => {
+			try {
+				dispatch({type: LOADING})
+				await Facebook.initializeAsync({appId: FACEBOOK_APP_ID});
+				const { type, token } = await Facebook.logInWithReadPermissionsAsync({permissions: ['public_profile', 'email'],})
 				
-				const credential = firebase.auth.FacebookAuthProvider.credential(token);
-				await firebase.auth().signInWithCredential(credential);
-				const user = {
-					email : firebase.auth().currentUser.providerData[0].email,
-					uid : firebase.auth().currentUser.providerData[0].uid
+				if (type == 'success') {			
+					
+					const credential = firebase.auth.FacebookAuthProvider.credential(token);
+					await firebase.auth().signInWithCredential(credential);
+					const user = {
+						email : firebase.auth().currentUser.providerData[0].email,
+						uid : firebase.auth().currentUser.providerData[0].uid
+					}
+	
+					db.collection('users')
+						.doc(user.uid)
+						.set(user);
+					alert('Logged in! \n' + "Hola: " + user.email );	
+					dispatch({ type: LOGIN_FACEBOOK, payload:getUser("prueba") });
+					    														  
 				}
-
-				db.collection('users')
-					.doc(user.uid)
-					.set(user);
-				alert('Logged in! \n' + "Hola: " + user.email );	
-				dispatch({ type: LOGIN_FACEBOOK, payload:getUser("prueba") });
-																			  
+			} catch (e) {			
+				dispatch({type: LOGIN_FAILED})
+				alert('ERROR ',e)
 			}
-		} catch (e) {			
-			dispatch({type: LOGIN_FAILED})
-			alert('ERROR ',e)
 		}
 	}
-}
+
