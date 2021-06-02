@@ -6,23 +6,38 @@ const firebase = require('firebase')
 // define types
 
 export const UPDATE_EMAIL = 'UPDATE_EMAIL'
-export const UPDATE_PASSWORD = 'UPDATE_PASSWORD'
-export const LOGIN = 'LOGIN'
-export const SIGNUP = 'SIGNUP'
-export const LOGIN_FACEBOOK = 'LOGIN_FACEBOOK'
-export const LOADING = 'LOADING'
-export const LOGIN_FAILED = 'LOGIN_FAILED'
+export const UPDATE_EMAIL_SUCCESS = 'UPDATE_EMAIL_SUCCESS'
+export const UPDATE_EMAIL_FAIL = 'UPDATE_EMAIL_FAIL'
 
+export const UPDATE_PASSWORD = 'UPDATE_PASSWORD'
+export const UPDATE_PASSWORD_SUCCESS = 'UPDATE_PASSWORD'
+export const UPDATE_PASSWORD_FAIL = 'UPDATE_PASSWORD'
+
+export const LOGIN = 'LOGIN'
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
+export const LOGIN_FAIL = 'LOGIN_FAIL'
+
+export const SIGNUP = 'SIGNUP'
+export const SIGNUP_SUCCESS = 'SIGNUP_SUCCESS'
+export const SIGNUP_FAIL = 'SIGNUP_FAIL'
+
+export const LOGIN_FACEBOOK = 'LOGIN_FACEBOOK'
+export const LOGIN_FACEBOOK_SUCCESS = 'LOGIN_FACEBOOK'
+export const LOGIN_FACEBOOK_FAIL = 'LOGIN_FACEBOOK'
+
+export const LOGIN_FAILED = 'LOGIN_FAILED'
+export const LOGIN_FAILED_SUCCESS = 'LOGIN_FAILED'
+export const LOGIN_FAILED_FAIL = 'LOGIN_FAILED'
 // actions
 
-export const updateEmail = email => {
+export const updateEmailSuccess = email => {
 	return {
 		type: UPDATE_EMAIL,
 		payload: email
 	}
 }
 
-export const updatePassword = password => {
+export const updatePasswordSuccess = password => {
 	return {
 		type: UPDATE_PASSWORD,
 		payload: password

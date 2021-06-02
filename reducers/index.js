@@ -1,26 +1,9 @@
+
 import {combineReducers} from 'redux';
-import { LOGIN, SIGNUP, LOGIN_FACEBOOK, UPDATE_EMAIL, UPDATE_PASSWORD } from '../actions/user'
-
-const user = (state = {}, action) => {
-	switch (action.type) {
-		case LOGIN:
-			return action.payload
-		case SIGNUP:
-			return action.payload
-		case LOGIN_FACEBOOK:
-			return action.payload
-		case UPDATE_EMAIL:
-			return { ...state, email: action.payload }
-		case UPDATE_PASSWORD:
-			return { ...state, password: action.payload }
-		default:
-			return state
-	}
-}
-
-const rootReducer = combineReducers({
-	user
+import gameReducer from './game.reducer'
+import userReducer from './user.reducer'
+export default combineReducers({
+    user: userReducer,
+    game: gameReducer
 })
-
-export default rootReducer
 
