@@ -1,9 +1,11 @@
 import React from 'react'
-import { View, TextInput, StyleSheet, TouchableOpacity, Text, Button } from 'react-native'
+import { View, TextInput, StyleSheet, TouchableOpacity, Text, Pressable,Image} from 'react-native'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { updateEmail, updatePassword, login, getUser, loginFacebook } from '../../actions/user'
+import { updateEmail, updatePassword, login, getUser, loginFacebook} from '../../actions/user'
+import { Ionicons } from '@expo/vector-icons';
 import Firebase from '../../Firebase'
+import { BlackJack } from '../../assets'
 
 class Login extends React.Component {
 	componentDidMount = () => {
@@ -20,6 +22,8 @@ class Login extends React.Component {
 	render() {
 		return (
 			<View style={styles.container}>
+				<Image source={BlackJack}
+					style={styles.imgUser} />
 				<TextInput
 					style={styles.inputBox}
 					value={this.props.user.email}
@@ -37,14 +41,19 @@ class Login extends React.Component {
 				<TouchableOpacity style={styles.button} onPress={() => this.props.login()}>
 					<Text style={styles.buttonText}>Iniciar sesión</Text>
 				</TouchableOpacity>
-				<Button
-					title="Registrarse"
-					onPress={() => this.props.navigation.navigate('Signup')}
-				/>
-				<Button
-					title="Iniciar sesión con Facebook"
+				<Text style={styles.divider}>_____________________________________________</Text>
+				<Pressable
+					style={styles.buttonSignup}
+					onPress={() => this.props.navigation.navigate('Signup')}>
+					<Text style={styles.textFb}>Registrarse <Ionicons name="person-circle" size={18} color="black" /></Text>
+				</Pressable>
+				<Pressable
+					style={styles.buttonFacebook}
 					onPress={() => this.props.loginFacebook()}
-				/>
+				>
+					<Text style={styles.textFb}>Iniciar sesión con Facebook <Ionicons name="logo-facebook" size={18} color="blue" /></Text>
+
+				</Pressable>
 			</View>
 		)
 	}
@@ -56,6 +65,17 @@ const styles = StyleSheet.create({
 		backgroundColor: '#fff',
 		alignItems: 'center',
 		justifyContent: 'center'
+	}, 
+	imgUser: {
+		width: "50%",
+		height: "25%",
+		marginBottom: "5%"
+	},
+	divider: {
+		width: "80%",
+		color: 'rgba(0,0,0,0.15)',
+		marginBottom: "5%",
+		marginTop: "5%"
 	},
 	inputBox: {
 		width: '85%',
@@ -64,31 +84,59 @@ const styles = StyleSheet.create({
 		fontSize: 16,
 		borderColor: '#d3d3d3',
 		borderBottomWidth: 1,
-		textAlign: 'center'
+		textAlign: 'left'
 	},
 	button: {
-		marginTop: 30,
-		marginBottom: 20,
-		paddingVertical: 5,
+		marginTop: "10%",
+		marginBottom: "5%",
+		borderRadius: 4,
+		width: "60%",
 		alignItems: 'center',
+		justifyContent: 'center',
+		paddingVertical: 12,
+		elevation: 3,
 		backgroundColor: '#F6820D',
-		borderColor: '#F6820D',
+		borderColor: 'rgba(0, 0, 0,0.20)',
 		borderWidth: 1,
-		borderRadius: 5,
-		width: 200
+	},
+	buttonFacebook: {
+		marginBottom: "5%",
+		borderRadius: 4,
+		width: "60%",
+		alignItems: 'center',
+		justifyContent: 'center',
+		paddingVertical: 12,
+		elevation: 3,
+		backgroundColor: '#ffff',
+		borderColor: 'rgba(36, 139, 215,0.50)',
+		borderWidth: 1,
 	},
 	buttonText: {
-		fontSize: 20,
+		fontSize: 18,
 		fontWeight: 'bold',
 		color: '#fff'
 	},
+	textFb: {
+		fontSize: 15,
+		fontWeight: "bold",
+		color: "black"
+	},
 	buttonSignup: {
-		fontSize: 12
+		marginBottom: "5%",
+		borderRadius: 4,
+		width: "60%",
+		alignItems: 'center',
+		justifyContent: 'center',
+		paddingVertical: 12,
+		elevation: 3,
+		backgroundColor: '#ffff',
+		borderColor: 'rgba(0, 0, 0,0.15)',
+		borderWidth: 1,
 	}
 })
 
 const mapDispatchToProps = dispatch => {
-	return bindActionCreators({ updateEmail, updatePassword, login, loginFacebook ,getUser }, dispatch)
+	return bindActionCreators({ updateEmail, updatePassword, login, loginFacebook, getUser }, dispatch)
 }
 
 const mapStateToProps = state => {
