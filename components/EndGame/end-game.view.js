@@ -3,8 +3,12 @@ import { View, Text, Pressable, StyleSheet } from 'react-native'
 
 class EndGame extends React.Component {
 
-    back = () => {
+    exit = () => {
         this.props.navigation.navigate('Profile')
+    }
+
+    again = () => {
+        this.props.navigation.navigate('Game')
     }
 
     render() {
@@ -13,7 +17,10 @@ class EndGame extends React.Component {
                 <Text style={styles.endGameTitle}>FIN DEL JUEGO</Text>
                 <Text style={styles.textMoney}>EL DINERO GANADO ES</Text>
                 <Text style={styles.textValues}>XXXX</Text>
-                <Pressable style={styles.backButton} onPress={this.back}>
+                <Pressable style={styles.backButton} onPress={this.again}>
+                    <Text style={styles.text}>VOLVER A JUGAR</Text>
+                </Pressable>
+                <Pressable style={styles.backButton} onPress={this.exit}>
                     <Text style={styles.text}>FINALIZAR</Text>
                 </Pressable>
             </View>

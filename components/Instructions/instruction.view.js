@@ -24,9 +24,6 @@ class Instruction extends React.Component {
                 <Text style={styles.title}>Botón: <Text style={styles.stand }> "PLANTARSE" </Text></Text>
                 <Text style={styles.text}>Se detiene el juego para usted, no puede apostar
                     mas ni pedir mas cartas solo esperando la resolución del crupier, si pierde o gana.</Text>
-                <Text style={styles.title}>Botón: <Text style={ styles.end}> "FINALIZAR" </Text> </Text>
-                <Text style={styles.text}>Se termina su partida de juego, se muestra su
-                    dinero ganado y lo devuelve a la pantalla de inicio.</Text>
                 </View>
                 <Pressable style={styles.goProfileButton} onPress={this.goProfile}>
                     <Text style={styles.back}>VOLVER</Text>

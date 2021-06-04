@@ -1,5 +1,5 @@
 import Firebase, { db } from '../Firebase'
-import {FACEBOOK_APP_ID} from 'react-native-dotenv'
+import { FACEBOOK_APP_ID } from 'react-native-dotenv'
 import * as Facebook from 'expo-facebook'
 const firebase = require('firebase')
 
@@ -28,6 +28,10 @@ export const LOGIN_FACEBOOK_FAIL = 'LOGIN_FACEBOOK'
 export const LOGIN_FAILED = 'LOGIN_FAILED'
 export const LOGIN_FAILED_SUCCESS = 'LOGIN_FAILED'
 export const LOGIN_FAILED_FAIL = 'LOGIN_FAILED'
+
+export const UPDATE_MONEY = 'UPDATE_MONEY'
+export const UPDATE_MONEY_SUCCESS = 'UPDATE_MONEY_SUCCESS'
+export const UPDATE_MONEY_FAIL = 'UPDATE_MONEY_FAIL'
 // actions
 
 export const updateEmailSuccess = email => {
@@ -47,7 +51,7 @@ export const updatePasswordSuccess = password => {
 export const login = () => {
 	return async (dispatch, getState) => {
 		try {
-			dispatch({type: LOADING})
+			dispatch({ type: LOADING })
 			const { email, password } = getState().user
 			const response = await Firebase.auth().signInWithEmailAndPassword(email, password)
 
@@ -66,11 +70,10 @@ export const getUser = uid => {
 				.doc(uid)
 				.get()
 
-			
 			dispatch({ type: LOGIN, payload: user.data() })
 
 		} catch (e) {
-			dispatch({type: LOGIN_FAILED})
+			dispatch({ type: LOGIN_FAILED })
 			alert(e)
 		}
 	}
@@ -84,7 +87,8 @@ export const signup = () => {
 			if (response.user.uid) {
 				const user = {
 					uid: response.user.uid,
-					email: email
+					email: email.FACEBOOK_APP_ID,
+					money: 5000
 				}
 
 				db.collection('users')
@@ -100,32 +104,52 @@ export const signup = () => {
 }
 
 export const loginFacebook = () => {
-		return async (dispatch) => {
-			try {
-				dispatch({type: LOADING})
-				await Facebook.initializeAsync({appId: FACEBOOK_APP_ID});
-				const { type, token } = await Facebook.logInWithReadPermissionsAsync({permissions: ['public_profile', 'email'],})
-				
-				if (type == 'success') {			
-					
-					const credential = firebase.auth.FacebookAuthProvider.credential(token);
-					await firebase.auth().signInWithCredential(credential);
-					const user = {
-						email : firebase.auth().currentUser.providerData[0].email,
-						uid : firebase.auth().currentUser.providerData[0].uid
-					}
-	
-					db.collection('users')
-						.doc(user.uid)
-						.set(user);
-					alert('Logged in! \n' + "Hola: " + user.email );	
-					dispatch({ type: LOGIN_FACEBOOK, payload:getUser("prueba") });
-					    														  
+	return async (dispatch) => {
+		try {
+			dispatch({ type: LOGIN_FACEBOOK })
+			await Facebook.initializeAsync({ appId: FACEBOOK_APP_ID });
+			const { type, token } = await Facebook.logInWithReadPermissionsAsync({ permissions: ['public_profile', 'email'], })
+
+			if (type == 'success') {
+
+				const credential = firebase.auth.FacebookAuthProvider.credential(token);
+				await firebase.auth().signInWithCredential(credential);
+				const user = {
+					email: firebase.auth().currentUser.providerData[0].email,
+					uid: firebase.auth().currentUser.providerData[0].uid,
+					money:5000
 				}
-			} catch (e) {			
-				dispatch({type: LOGIN_FAILED})
-				alert('ERROR ',e)
+				db.collection('users')
+					.doc(user.uid)
+					.set(user);
+				alert('Logged in! \n' + "Hola: " + user.email);
+				dispatch({ type: LOGIN_FACEBOOK_SUCCESS, payload: getUser("prueba") });
+
 			}
+		} catch (e) {
+			dispatch({ type: LOGIN_FACEBOOK_FAIL })
+			alert('ERROR ', e)
 		}
 	}
+}
 
+
+export const updateMoney = (_money) => {
+	return async (dispatch) => {
+		try {
+			const user = {
+				email: firebase.auth().currentUser.providerData[0].email,
+				uid: firebase.auth().currentUser.providerData[0].uid,
+				money: _money
+			}
+			db.collection("users")
+				.doc(this.auth.currentUser.uid)
+				.set(user)
+				.catch((error) => console.error("Error: ", error));
+			dispatch({ type: UPDATE_MONEY_SUCCESS, payload: getUser("prueba") });
+		} catch (e) {
+			dispatch({ type: UPDATE_MONEY_FAIL, payload: e })
+			alert(e)
+		}
+	}
+}

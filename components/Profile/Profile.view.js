@@ -27,7 +27,7 @@ class Profile extends React.Component {
 			<View style={styles.container}>
 				<Image source={UserImg}
 					style={styles.imgUser} />
-				<Text style={styles.textMoney}>Dinero: "player.money"</Text>
+				<Text style={styles.textMoney}>Dinero: {this.props.user.money}</Text>
 				<Text style={styles.textPlayer}>{this.props.user.email}</Text>
 				<Pressable style={styles.gameButton} onPress={this.handleGame}>
 					<Text style={styles.text}>JUGAR</Text>

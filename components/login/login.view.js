@@ -2,7 +2,7 @@ import React from 'react'
 import { View, TextInput, StyleSheet, TouchableOpacity, Text, Pressable,Image} from 'react-native'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { updateEmail, updatePassword, login, getUser, loginFacebook} from '../../actions/user'
+import { updateEmail, updatePassword, login, getUser, loginFacebook} from '../../actions/user.action'
 import { Ionicons } from '@expo/vector-icons';
 import Firebase from '../../Firebase'
 import { BlackJack } from '../../assets'

@@ -1,12 +1,14 @@
 import {
     UPDATE_EMAIL, UPDATE_EMAIL_SUCCESS, UPDATE_EMAIL_FAIL, UPDATE_PASSWORD, UPDATE_PASSWORD_SUCCESS, UPDATE_PASSWORD_FAIL
     , LOGIN, LOGIN_SUCCESS, LOGIN_FAIL, SIGNUP, SIGNUP_SUCCESS, SIGNUP_FAIL, LOGIN_FACEBOOK, LOGIN_FACEBOOK_SUCCESS, LOGIN_FACEBOOK_FAIL
-    , LOGIN_FAILED, LOGIN_FAILED_SUCCESS, LOGIN_FAILED_FAIL
+    , LOGIN_FAILED, LOGIN_FAILED_SUCCESS, LOGIN_FAILED_FAIL, UPDATE_MONEY, UPDATE_MONEY_SUCCESS, UPDATE_MONEY_FAIL
 } from '../actions/user.action'
 
+ 
 const initialState = {
     email: '',
     password: '',
+    money: 0,
     isFeching: false,
     error: false
 }
@@ -50,14 +52,16 @@ const user = (state = initialState, action) => {
             return { ...state, isFeching: false }
         case LOGIN_FAILED_FAIL:
             return { ...state, error: true }
+        case UPDATE_MONEY:
+            return { ...state, isFeching: true }
+        case UPDATE_MONEY_SUCCESS:
+            return action.payload
+        case UPDATE_MONEY_FAIL:
+            return { ...state, isError: true }
         default:
             return state
     }
 }
 
-const rootReducer = combineReducers({
-    user
-})
-
-export default rootReducer
+export default user
 

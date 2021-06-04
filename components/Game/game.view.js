@@ -1,13 +1,19 @@
 import React from 'react'
 import { View, Text, Pressable, StyleSheet, Modal, TextInput } from 'react-native'
+import GameViewController from './game.viewController'
 
 class Game extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			showModal: false,
-			moneyBet: 0
+			moneyBet: 0,
+			amount:0
 		}
+	}
+
+	componentDidMount(){
+	//this.newGame();
 	}
 
 	betMoney = (money) => {
@@ -19,19 +25,17 @@ class Game extends React.Component {
 		this.setState({ showModal: false });
 	}
 
-	cardRequest = () => {
-
-	}
-
-	stand = () => {
-
-	}
-
+	
 	endGame = () => {
 		this.props.navigation.navigate('EndGame')
 	}
 
 	render() {
+		const {
+			hit,
+			nextTurn,
+			newGame
+        } = this.props
 		return (
 			<View style={styles.container}>
 				<View style={{ flexDirection: "column" }}>
@@ -49,7 +53,7 @@ class Game extends React.Component {
 					<View
 						style={styles.viewGame}>
 						<Text style={styles.textPlayers}>player.name</Text>
-						<Text style={styles.textValues}>Dinero: XXXX</Text>
+						<Text style={styles.textValues}>Dinero: {this.state.amount}       Apuesta:{this.state.moneyBet}</Text>
 						<View style={styles.boxCards}>
 							{/* Lo mejor es colocar un map de un array aquí 
 							arr.map( (data, i) => {
